@@ -2,17 +2,16 @@
 
 using namespace std;
 
-template <class T>
-
-class LRUCache {
+template <class T> class LRUCache {
 private:
     unordered_map<string, T> mCache;
+    double mCapacity;
 
 public:
     /**
      * default constrcutor
      */
-    LRUCache();
+    LRUCache(double);
 
     /**
      * destructor
