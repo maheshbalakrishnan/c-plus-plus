@@ -5,13 +5,10 @@ set(CMAKE_CXX_STANDARD 11)
 
 # include dirs
 include_directories(src/include)
+include_directories(src/include/external)
 
 # configure the build
 add_compile_options(-Wall -Wextra)
 
-# what to build
-file(GLOB SOURCES
-    src/include/*.h
-    src/*.cxx
-)
-add_executable(main ${SOURCES})
+add_executable(${PROJECT_NAME} src/main.cxx)
+add_executable(lru_cache src/lru_cache/lru_cache.cxx)
