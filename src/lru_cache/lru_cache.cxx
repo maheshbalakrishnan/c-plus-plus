@@ -18,18 +18,29 @@ template <class T> LRUCache<T>::~LRUCache() {
     cout << "Destructing LRUCache\n";
 }
 
+template <class T> bool LRUCache<T>::getCacheValue(string key, CacheValue& value) {
+    if (mCache.find(key) == mCache.end()) {
+        return false;
+    }
+    value = mCache.at(key);
+    return true;
+}
+
+
 /**
  * Returns the value if found in the cache, returns
  * nullptr otherwise
  */
 template <class T> bool LRUCache<T>::get(string key, T& value) {
-    if(mCache.find(key) == mCache.end()) {
+    CacheValue cacheValue;
+    if (!this->getCacheValue(key, cacheValue)) {
         return false;
     }
     auto usageQueueRecord = recordKeyUsage(key);
-    value = (mCache.get(key)).second;
-    CacheValue insert = { usageQueueRecord, value };
-    mCache.insert(key, insert);
+    CacheValue insertValue = { usageQueueRecord, value };
+    CacheKVPair insertPair = { key, insertValue };
+    mCache.insert(insertPair);
+    value = cacheValue.second;
     return true;
 }
 
@@ -38,15 +49,16 @@ template <class T> bool LRUCache<T>::get(string key, T& value) {
  * with a new value
  */
 template <class T> bool LRUCache<T>::put(string key, T value) {
-    if(mCapacity == mCache->size()) {
+    if(mCapacity == mCache.size()) {
         // capacity reached, evict!
         if(!evictKey(getLRU())) {
             return false;
         }
     }
     auto usageQueueRecord = recordKeyUsage(key);
-    CacheValue insert = { usageQueueRecord, value };
-    this->mCache.insert(key, insert);
+    CacheValue insertValue = { usageQueueRecord, value };
+    CacheKVPair insertPair = { key, insertValue };
+    mCache.insert(insertPair);
     return true;
 }
 
@@ -66,14 +78,14 @@ template <class T> string LRUCache<T>::getLRU() {
 /**
  * Removes a key from the cache
  */
-template <class T> void LRUCache<T>::evictKey(string key) {
+template <class T> bool LRUCache<T>::evictKey(string key) {
     CacheValue value;
-    if(!get(key, value)) {
-        return;
+    if(!getCacheValue(key, value)) {
+        return false;
     }
     mUsageList.erase(value.first);
     mCache.erase(key);
-    return;
+    return true;
 }
 
 /**

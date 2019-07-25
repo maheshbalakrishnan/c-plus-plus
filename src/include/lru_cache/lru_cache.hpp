@@ -7,6 +7,7 @@ typedef std::list<string>::iterator UsageListIterator;
 
 template <class T> class LRUCache {
     typedef std::pair<UsageListIterator, T> CacheValue;
+    typedef std::pair<string, CacheValue> CacheKVPair;
 private:
     unordered_map<string, CacheValue> mCache;
     list<string> mUsageList;
@@ -20,7 +21,7 @@ private:
     /**
      * Evicts a key from the cache
      */
-    void evictKey(string);
+    bool evictKey(string);
 
     /**
      * Records the usage of the key, decreasing the 
@@ -29,6 +30,8 @@ private:
     UsageListIterator recordKeyUsage(string);
 
     UsageListIterator recordKeyUsage(string, UsageListIterator);
+
+    bool getCacheValue(string, CacheValue&);
 
 public:
     /**
