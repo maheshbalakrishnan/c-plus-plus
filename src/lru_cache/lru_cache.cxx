@@ -104,8 +104,6 @@ template <class T> UsageListIterator LRUCache<T>::recordKeyUsage(string key, Usa
     return recordKeyUsage(key);
 }
 
-
-
 /**
  * temporary entry point 
  */

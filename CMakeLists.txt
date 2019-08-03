@@ -8,6 +8,7 @@ include_directories(src/include)
 include_directories(src/include/external)
 
 add_subdirectory(src/lru_cache)
+add_subdirectory(src/test)
 
 # configure the build
 add_compile_options(-Wall -Wextra)
