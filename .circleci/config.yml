@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: debian:stretch
+
+    steps:
+      - checkout
+
+      - run:
+          name: Building
+          command: mkdir build && cd build && cmake .. && make
+
+      - run:
+          name: Running tests
+          command: make test
