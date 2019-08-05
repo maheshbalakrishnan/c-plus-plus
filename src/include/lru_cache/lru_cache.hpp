@@ -1,3 +1,4 @@
+#pragma once
 #include<unordered_map>
 #include<list>
 
@@ -5,7 +6,8 @@ using namespace std;
 
 typedef std::list<string>::iterator UsageListIterator;
 
-template <class T> class LRUCache {
+template <class T> 
+class LRUCache {
     typedef std::pair<UsageListIterator, T> CacheValue;
     typedef std::pair<string, CacheValue> CacheKVPair;
 private:

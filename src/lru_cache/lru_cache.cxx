@@ -2,23 +2,27 @@
 #include "common.hpp"
 #include "data.hpp"
 #include "lru_cache/lru_cache.hpp"
+
 using namespace std;
 
 /*
  * Constructor which takes in the maximum capacity of the cache
  */
-template <class T> LRUCache<T>::LRUCache(double capacity) : mCapacity(capacity) {
+template <class T>
+LRUCache<T>::LRUCache(double capacity) : mCapacity(capacity) {
     cout << "Constructing LRUCache\n";
 }
 
 /*
  * destructor
  */
-template <class T> LRUCache<T>::~LRUCache() {
+template <class T>
+LRUCache<T>::~LRUCache() {
     cout << "Destructing LRUCache\n";
 }
 
-template <class T> bool LRUCache<T>::getCacheValue(string key, CacheValue& value) {
+template <class T>
+bool LRUCache<T>::getCacheValue(string key, CacheValue& value) {
     if (mCache.find(key) == mCache.end()) {
         return false;
     }
@@ -48,7 +52,8 @@ template <class T> bool LRUCache<T>::get(string key, T& value) {
  * Inserts a new key into the cache or updates an existing key 
  * with a new value
  */
-template <class T> bool LRUCache<T>::put(string key, T value) {
+template <class T>
+bool LRUCache<T>::put(string key, T value) {
     if(mCapacity == mCache.size()) {
         // capacity reached, evict!
         if(!evictKey(getLRU())) {
@@ -91,7 +96,8 @@ template <class T> bool LRUCache<T>::evictKey(string key) {
 /**
  * Records the usage of a new key
  */
-template <class T> UsageListIterator LRUCache<T>::recordKeyUsage(string key) {
+template <class T>
+UsageListIterator LRUCache<T>::recordKeyUsage(string key) {
     mUsageList.push_front(key);
     return mUsageList.end();
 }
@@ -99,30 +105,16 @@ template <class T> UsageListIterator LRUCache<T>::recordKeyUsage(string key) {
 /**
  * Records the usage of an existing key
  */
-template <class T> UsageListIterator LRUCache<T>::recordKeyUsage(string key, UsageListIterator it) {
+template <class T>
+UsageListIterator LRUCache<T>::recordKeyUsage(string key, UsageListIterator it) {
     mUsageList.erase(it);
     return recordKeyUsage(key);
 }
 
-/**
- * temporary entry point 
- */
-int main(int argc, char* argv[]) {
-    UNUSED(argc)
-    UNUSED(argv)
-    LRUCache<Data> lc(5);
-    Data d;
-    lc.put("a", d);
-    lc.put("b", d);
-    lc.put("c", d);
-    lc.put("d", d);
-    lc.put("e", d);
+void temp() {
+    LRUCache<int> lruCache(100);
+    lruCache.put("asd", 1);
+    int a;
+    lruCache.get("asd", a);
 
-    // should evict a
-    lc.put("f", d);
-
-    Data g;
-    lc.get("a", g);
-    
-    return 0;
 }
